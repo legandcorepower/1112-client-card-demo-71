@@ -1,12 +1,12 @@
-import axios from 'axios';
+//import axios from 'axios';
 import { useState,useEffect } from 'react';
 //import blogsdata from '../data/blogData2_71';
-
 //let api_url = `http://localhost:5000/api/card2_71`;
+//let api_url = `https://one112-server-card-demo-71.onrender.com/api/card2_71`;
 
-let api_url = `https://one112-server-card-demo-71.onrender.com/api/card2_71`;
+import {supabase} from '../db/clientSupabase';
 
-const BlogsNodeServerPage_71 = () => {
+const BlogsSupabase_71 = () => {
     const [name,setName] = useState('207410571');
     const [id,setid] = useState('207410571');
 
@@ -14,19 +14,22 @@ const BlogsNodeServerPage_71 = () => {
     //console.log('blog data',data);
 
 
-     const fetchBlogDataFromNodeServer = async() =>{
-       try{
-         const results = await axios.get(api_url);
-         console.log('results',results);
-         setData(results.data);
-       }catch(error){
+      const fetchBlogDataFromSupabase = async() =>{
+        try{
+          let { data ,error } = await supabase
+          .from('card_71')
+          .select('*')
+          
+         console.log('data',data);
+         setData(data);
+      }catch(error){
         console.log(error);
        }
-     }
+      }
      
-     useEffect(()=>{
-      fetchBlogDataFromNodeServer();
-     },[]);
+      useEffect(()=>{
+      fetchBlogDataFromSupabase();
+      },[]);
 
 
 
@@ -35,7 +38,7 @@ const BlogsNodeServerPage_71 = () => {
         <>
          <section className="blogs">
       <div className="section-title">
-        <h2>Fetch Blogs From Node Server --{name} {id}</h2>
+        <h2>Fetch Blogs From Supabase --{name} {id}</h2>
       </div>
       <div className="blogs-center">
         {data.map((item) => {
@@ -63,4 +66,4 @@ const BlogsNodeServerPage_71 = () => {
     )
 }
 
-export default BlogsNodeServerPage_71;
+export default BlogsSupabase_71;
